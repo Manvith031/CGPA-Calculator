@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png"> </head>
+<body>
+    <div class="container">
+        <button id="theme-toggle" class="theme-toggle-button">
+            Toggle Theme
+        </button>
+
+        <div id="welcome-screen" class="screen active">
+            <h1 id="welcome-label" class="fade-in">Welcome to SGPA Calculator!</h1>
+            <input type="text" id="name-input" placeholder="Enter your name (optional)">
+            <button id="start-button" class="action-button">Start Calculation</button>
+            <button id="instructions-button" class="secondary-button">Instructions</button>
+        </div>
+
+        <div id="wizard-screen" class="screen">
+            <h2>Enter Your Marks</h2>
+            <form id="marks-form">
+                </form>
+            <button id="calculate-button" class="action-button">Calculate SGPA</button>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="spinner-container">
+                <div id="spinner" class="spinner"></div>
+                <p id="loading-label">Calculating...</p>
+            </div>
+            <button id="reveal-button" class="action-button hidden">Reveal SGPA</button>
+        </div>
+
+        <div id="final-result-screen" class="screen">
+            <h2 id="final-result-label">Your SGPA is: --</h2>
+            <button id="show-breakdown-button" class="secondary-button">Show Breakdown</button>
+            <button id="back-to-main-button" class="action-button">Back to Main</button>
+        </div>
+    </div>
+
+    <div id="instruction-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Instructions</h2>
+            <p><strong>CIE Marks:</strong> Continuous Internal Evaluation, out of 50.</p>
+            <p><strong>End Sem Marks:</strong> End Semester Examination, out of 100 for core subjects, out of 50 for specific subjects like Professional Writing, Scientific Foundation of Health, and Indian Constitution.</p>
+            <p><strong>Calculation Logic:</strong></p>
+            <ul>
+                <li>Total Marks for core subjects = CIE (out of 50) + (End Sem / 2) (converted to 50). This sum is out of 100.</li>
+                <li>Total Marks for Professional Writing, Scientific Foundation of Health, Indian Constitution = CIE (out of 50) + End Sem (out of 50). This sum is out of 100.</li>
+                <li>The total marks (out of 100) are then converted to a 10-point grade score using a predefined scale.</li>
+                <li>SGPA is calculated as (Sum of (Grade Score * Credits)) / Total Credits.</li>
+            </ul>
+            <p>Ensure all marks are entered correctly before calculating.</p>
+        </div>
+    </div>
+
+    <div id="breakdown-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Marks Breakdown</h2>
+            <div id="breakdown-content">
+                </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

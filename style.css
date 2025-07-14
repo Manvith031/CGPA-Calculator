@@ -1,0 +1,395 @@
+:root {
+    /* Fabulous Light Theme - Adjustable as needed */
+    --background-color: #f0f2f5; /* Light grey/blue background */
+    --text-color: #333;
+    --panel-background: #ffffff; /* White card background */
+    --input-background: #f9f9f9;
+    --input-border: #ddd;
+    --button-primary: #4CAF50; /* Primary button - Green */
+    --button-primary-hover: #43A047;
+    --button-secondary: #2196F3; /* Secondary button - Blue */
+    --button-secondary-hover: #1976D2;
+    --modal-overlay: rgba(0, 0, 0, 0.6);
+    --modal-content-background: #ffffff;
+    --spinner-color: #4CAF50;
+    --error-color: #e53935; /* Red for validation errors */
+}
+
+/* Dark Theme */
+body.dark-theme {
+    --background-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --panel-background: #2a2a2a;
+    --input-background: #333;
+    --input-border: #555;
+    --button-primary: #008CBA; /* Dark theme primary (blue) */
+    --button-primary-hover: #007bb5;
+    --button-secondary: #607d8b; /* Dark theme secondary (greyish blue) */
+    --button-secondary-hover: #455a64;
+    --modal-overlay: rgba(0, 0, 0, 0.8);
+    --modal-content-background: #3a3a3a;
+    --spinner-color: #008CBA;
+    --error-color: #ff6b6b;
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align content to top */
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: var(--panel-background);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    position: relative; /* Crucial for absolute positioning of screens */
+    overflow: hidden; /* Hide overflowing screens during transition */
+    min-height: 600px; /* Ensure sufficient height for all screens */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    transition: background-color 0.5s ease;
+}
+
+/* Screen Transitions */
+.screen {
+    width: 100%;
+    position: absolute; /* All screens are absolutely positioned initially */
+    top: 0;
+    left: 0;
+    height: 100%; /* Ensure screens fill container height */
+    padding: 30px; /* Match container padding */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--panel-background); /* Explicit background for each screen */
+    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out, visibility 0.6s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%); /* Default: off-screen right */
+    z-index: 1; /* Default z-index for inactive screens */
+}
+
+.screen.active {
+    position: relative; /* Active screen is in the flow */
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0); /* Slide into view */
+    z-index: 2; /* Active screen is on top */
+}
+
+/* Specific classes for screens moving out or waiting off-screen */
+.screen.inactive-left {
+    transform: translateX(-100%); /* Off-screen left */
+    opacity: 0;
+    visibility: hidden;
+    position: absolute; /* Keep absolute to remove from flow */
+    z-index: 0; /* Behind other screens */
+}
+
+.screen.inactive-right {
+    transform: translateX(100%); /* Off-screen right */
+    opacity: 0;
+    visibility: hidden;
+    position: absolute; /* Keep absolute to remove from flow */
+    z-index: 0; /* Behind other screens */
+}
+
+
+/* Initial state for welcome-label animation */
+#welcome-label {
+    opacity: 0;
+}
+#welcome-screen.active #welcome-label {
+    opacity: 1;
+    transition: opacity 2s ease-out;
+}
+
+/* Form inputs and buttons */
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 12px 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    font-size: 1em;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: var(--button-primary); /* Uses primary button color for focus */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25); /* Green shadow from button color */
+}
+
+.action-button, .secondary-button, .theme-toggle-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: auto;
+    margin-top: 10px;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.action-button {
+    background-color: var(--button-primary);
+    color: white;
+}
+
+.action-button:hover {
+    background-color: var(--button-primary-hover);
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    background-color: var(--button-secondary);
+    color: white;
+}
+
+.secondary-button:hover {
+    background-color: var(--button-secondary-hover);
+    transform: translateY(-2px);
+}
+
+.theme-toggle-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--button-secondary);
+    color: white;
+    font-size: 0.9em;
+    padding: 8px 15px;
+    z-index: 10;
+}
+.theme-toggle-button:hover {
+    background-color: var(--button-secondary-hover);
+}
+
+
+.subject-input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: left;
+    opacity: 0; /* For fade-in animation */
+    transform: translateY(20px); /* For slide-up effect */
+}
+
+.subject-input-group label {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.subject-input-group input {
+    width: calc(100% - 22px);
+    display: block;
+}
+
+.subject-input-group input:first-of-type {
+    margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Spinner Styles - ENHANCED FOR FULL VISIBILITY AND CENTERING */
+.spinner-container {
+    position: absolute; /* Position it relative to its parent .screen */
+    inset: 0; /* Top, right, bottom, left set to 0, making it fill parent */
+    display: flex; /* Always flex to center content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%; /* Ensure it takes full width */
+    height: 100%; /* Ensure it takes full height */
+    background-color: var(--panel-background); /* Match screen background for seamless transition */
+    opacity: 0; /* Controlled by JS */
+    transition: opacity 0.5s ease;
+    z-index: 5; /* Ensure it's above other elements on the screen */
+}
+
+.spinner {
+    border: 8px solid var(--input-border); /* Use input border for inner color */
+    border-top: 8px solid var(--spinner-color); /* Spinner color for the moving part */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Reveal button state and animation */
+.hidden {
+    opacity: 0;
+    pointer-events: none; /* Disable clicks when hidden */
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto; /* Enable clicks when visible */
+    transform: translateY(0);
+    animation: pulse 1s infinite alternate; /* Apply pulse animation */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); /* Green glow */
+    }
+    100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px rgba(76, 175, 80, 0); /* Fade out glow */
+    }
+}
+
+
+/* Final result label animation */
+#final-result-label {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--text-color);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#final-result-label.animated-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-overlay); /* Use specific overlay variable */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--modal-content-background);
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    color: var(--text-color);
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.close-button {
+    color: var(--text-color);
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--error-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    .action-button, .secondary-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+    .theme-toggle-button {
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+    .subject-input-group input {
+        width: calc(100% - 20px);
+    }
+    .modal-content {
+        padding: 20px;
+    }
+}
